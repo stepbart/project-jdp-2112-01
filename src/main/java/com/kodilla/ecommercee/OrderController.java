@@ -1,11 +1,13 @@
 package com.kodilla.ecommercee;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kodilla.ecommercee.dto.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,12 +15,19 @@ import java.util.List;
 public class OrderController {
 
     @GetMapping
-    public ResponseEntity<List<GenericEntity>> getAllOrders() {
-        List<GenericEntity> temporaryList = Arrays.asList(
-                new GenericEntity("Order 1"),
-                new GenericEntity("Order 2"),
-                new GenericEntity("Order 3")
-        );
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
+        List<OrderDto> temporaryList = new ArrayList<>();
+
+        for (long i = 0; i <= 5; i++) {
+            temporaryList.add(new OrderDto(
+                    i,
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    new BigDecimal(i * i),
+                    new BigDecimal(i * i * 2),
+                    "Sample status #" + i
+            ));
+        }
 
         return new ResponseEntity(
                 temporaryList,
@@ -27,31 +36,38 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<GenericEntity> addNewOrder(@RequestBody final GenericEntity genericEntity) {
+    public ResponseEntity<OrderDto> addNewOrder(@RequestBody final OrderDto order) {
         return new ResponseEntity(
-                genericEntity + " is created",
+                order,
                 HttpStatus.CREATED
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GenericEntity> getOrder(@PathVariable("id") final Long id) {
+    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") final Long id) {
         return new ResponseEntity(
-                "Order by id: " + new GenericEntity("Searching order by id"),
+                new OrderDto(
+                        1L,
+                        LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        new BigDecimal(25.00),
+                        new BigDecimal(100.00),
+                        "Sample status #"
+                ),
                 HttpStatus.OK
         );
     }
 
     @PutMapping
-    public ResponseEntity<Object> updateOrder(@RequestBody final GenericEntity genericEntity) {
+    public ResponseEntity<OrderDto> updateOrder(@RequestBody final OrderDto order) {
         return new ResponseEntity(
-                "Updated order: " + genericEntity,
+                order,
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<GenericEntity> deleteOrder(@PathVariable("id") final Long id) {
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") final Long id) {
         return new ResponseEntity(
                 "Order by id " + id + " was deleted",
                 HttpStatus.OK
