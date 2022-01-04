@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,6 @@ public class CartController {
 
     @PostMapping("/{id}")
     public ResponseEntity<OrderDto> createOrder(@PathVariable("id") Long cartId) {
-        return new ResponseEntity(new CartDto(1L, new BigDecimal(20)), HttpStatus.OK);
+        return new ResponseEntity(new OrderDto(1L, LocalDateTime.now(), LocalDateTime.now(), new BigDecimal(20), new BigDecimal(40), "Order created"), HttpStatus.OK);
     }
 }
