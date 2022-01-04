@@ -1,6 +1,8 @@
 package com.kodilla.ecommercee;
 
 import com.kodilla.ecommercee.dto.ProductDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,37 +12,58 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    @GetMapping(value="/getProducts")
-    public List<ProductDto> getProducts() {
-        List<ProductDto> productDtoList = new ArrayList<>();
-        productDtoList.add(new ProductDto(1L, "cheese", "price for 1 kg",
-                new BigDecimal("11.99")));
-        productDtoList.add(new ProductDto(2L, "apple", "price per item",
-                new BigDecimal("1.99")));
-        productDtoList.add(new ProductDto(3L, "potatoes", "price for 1 kg",
-                new BigDecimal("4.99")));
-        return productDtoList;
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        List<ProductDto> temporaryList = new ArrayList<>();
+
+        for (long i = 0; i <= 5; i++) {
+            temporaryList.add(new ProductDto(
+                    i,
+                    "Product_" + i,
+                    "price for 1 kg",
+                    new BigDecimal("5.00").multiply(BigDecimal.valueOf(i))
+            ));
+        }
+        return new ResponseEntity(
+                temporaryList,
+                HttpStatus.OK);
     }
 
-    @GetMapping(value="getProduct")
-    public ProductDto getProduct(@RequestParam final Long id) {
-        return new ProductDto(1L, "cheese", "price for 1 kg",
-                new BigDecimal("11.99"));
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProduct(@PathVariable("id") final Long id) {
+        return new ResponseEntity(
+                new ProductDto(
+                        1L,
+                        "Product_1",
+                        "price for 1 kg",
+                        new BigDecimal("25.00")
+                ),
+                HttpStatus.OK
+        );
     }
 
-    @PostMapping(value="createProduct")
-    public ProductDto addProduct(@RequestBody final ProductDto product) {
-        return product;
+    @PostMapping()
+    public ResponseEntity<ProductDto> addNewProduct(@RequestBody final ProductDto product) {
+        return new ResponseEntity(
+                product,
+                HttpStatus.CREATED
+        );
     }
 
-    @PutMapping(value="updateProduct")
-    public ProductDto updateProduct(@RequestBody final ProductDto product) {
-        return product;
+    @PutMapping()
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody final ProductDto product) {
+        return new ResponseEntity(
+                product,
+                HttpStatus.OK
+        );
     }
 
-    @DeleteMapping(value="deleteProduct")
-    public String deleteProduct(@RequestParam final Long id) {
-        return "The product with id " + id + " has been deleted";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") final Long id) {
+        return new ResponseEntity(
+                "Product by id " + id + " was deleted",
+                HttpStatus.OK
+        );
     }
 
 }
