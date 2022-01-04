@@ -2,10 +2,12 @@ package com.kodilla.ecommercee;
 
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.ItemDto;
+import com.kodilla.ecommercee.dto.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +30,13 @@ public class CartController {
         return new ResponseEntity(itemDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cart:{cartId}&item:{itemId}")
+    @DeleteMapping("/{cartId}/{itemId}")
     public ResponseEntity deleteItem(@PathVariable("cartId") Long cartId, @PathVariable("itemId") Long itemId) {
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity createOrder(@PathVariable("id") Long cartId) {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<OrderDto> createOrder(@PathVariable("id") Long cartId) {
+        return new ResponseEntity(new CartDto(1L, new BigDecimal(20)), HttpStatus.OK);
     }
 }
