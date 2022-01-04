@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -18,8 +19,20 @@ public class Product {
     @Column(name = "PRODUCT_ID", unique = true)
     private Long id;
 
+    @NotNull
+    @Column(name = "NAME")
+    private String name;
+
+    @NotNull
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @NotNull
+    @Column(name = "UNIT_PRICE")
+    private BigDecimal unitPrice;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID")
     private Group group;
+
 }
