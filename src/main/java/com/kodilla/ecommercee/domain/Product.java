@@ -35,4 +35,10 @@ public class Product {
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
+    public Product(String name, String description, BigDecimal unitPrice, Group group) {
+        this.name = name;
+        this.description = description;
+        this.unitPrice = unitPrice;
+        this.group = group;
+    }
 }
