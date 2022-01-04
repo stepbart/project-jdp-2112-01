@@ -18,10 +18,10 @@ public class GroupController {
     public ResponseEntity<List<GroupDto>> getAllGroups() {
         List<GroupDto> groups = new ArrayList<>();
 
-        for(int x = 0; x <= 10; x++) {
-            groups.add(x,
+        for(long x = 0; x <= 10; x++) {
+            groups.add(
                     new GroupDto(
-                            (long) x,
+                            x,
                             "GroupName#" +x
                     ));
         }
