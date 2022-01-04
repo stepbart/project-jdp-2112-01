@@ -14,7 +14,7 @@ public class GroupController {
 
     private GroupDto groupDto;
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<GroupDto>> getAllGroups() {
         List<GroupDto> groups = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class GroupController {
         );
     }
 
-    @PostMapping("/addGroup")
+    @PostMapping()
     public ResponseEntity<GroupDto> addNewGroup(@RequestBody final GroupDto groupDto) {
         return new ResponseEntity(
                 groupDto,
@@ -57,7 +57,7 @@ public class GroupController {
         );
     }
 
-    @PutMapping("/updateGroup")
+    @PutMapping()
     public ResponseEntity<GroupDto> updateGroup(@RequestBody GroupDto groupDto) {
         return new ResponseEntity(
                 groupDto,
