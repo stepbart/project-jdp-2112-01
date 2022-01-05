@@ -23,7 +23,7 @@ public class Cart {
 
     @NotNull
     @Column(name = "TOTAL_PRICE")
-    private BigDecimal totalprice;
+    private BigDecimal totalPrice;
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -36,7 +36,7 @@ public class Cart {
     private Order order;
 
     public Cart(BigDecimal totalPrice) {
-        this.totalprice = totalPrice;
+        this.totalPrice = totalPrice;
         this.items = new ArrayList();
     }
 }
