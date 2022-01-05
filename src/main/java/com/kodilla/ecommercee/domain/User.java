@@ -47,6 +47,13 @@ public class User {
     )
     private Set<Cart> carts;
 
+    @OneToMany(
+            targetEntity = Order.class,
+            mappedBy = "user",
+            cascade = CascadeType.ALL
+    )
+    private Set<Order> orders;
+
     public User(String userName, String firstName, String lastName, String email, String phoneNumber, String address, boolean isBlocked) {
         this.userName = userName;
         this.firstName = firstName;
