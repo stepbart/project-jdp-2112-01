@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -31,6 +33,14 @@ public class Order extends GenericEntity {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @OneToMany(
+            targetEntity = Item.class,
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Item> items = new ArrayList<>();
 
     @OneToMany(
             targetEntity = Cart.class,
