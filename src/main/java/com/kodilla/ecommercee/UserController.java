@@ -15,7 +15,7 @@ public class UserController {
         return new ResponseEntity(userDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{userId}")
     public ResponseEntity<UserDto> blockUser(@PathVariable Long userId, @RequestBody final UserDto userDto){
         userDto.setBlocked(true);
         return new ResponseEntity(userDto, HttpStatus.OK);
