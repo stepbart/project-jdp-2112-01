@@ -1,24 +1,34 @@
 package com.kodilla.ecommercee.domain;
 
-import com.sun.istack.NotNull;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
-@Entity
-@Getter
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ITEMS")
+@Entity
+@Table(name="ITEMS")
 public class Item {
 
     @Id
     @GeneratedValue
-    @NotNull
-    @Column(name = "ITEM_ID", unique = true)
+    @Column(name="id", nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CART_ID")
+    @Column(name="quantity", nullable = false)
+    private int quantity;
+
+    @Column(name="price", nullable = false)
+    private BigDecimal price;
+
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name="cart_id")
     private Cart cart;
+
 }

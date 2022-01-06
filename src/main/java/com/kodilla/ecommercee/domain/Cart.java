@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "CARTS")
 public class Cart {
 
+
     @Id
     @GeneratedValue
     @NotNull
@@ -32,7 +33,7 @@ public class Cart {
     @OneToMany(targetEntity = Item.class, mappedBy = "cart", cascade = CascadeType.ALL)
     private List<Item> items;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Order.class, mappedBy = "cart", cascade = CascadeType.ALL)
     private Order order;
 
     public Cart(BigDecimal totalPrice) {
