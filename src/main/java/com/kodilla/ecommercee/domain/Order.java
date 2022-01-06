@@ -49,6 +49,6 @@ public class Order extends GenericEntity {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "CART_ID")
-    private Cart carts;
+    private Cart cart;
 
 }

@@ -33,7 +33,7 @@ public class Cart {
     @OneToMany(targetEntity = Item.class, mappedBy = "cart", cascade = CascadeType.ALL)
     private List<Item> items;
 
-    @OneToOne(targetEntity = Order.class, mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Order.class, cascade = CascadeType.ALL)
     private Order order;
 
     public Cart(BigDecimal totalPrice) {
