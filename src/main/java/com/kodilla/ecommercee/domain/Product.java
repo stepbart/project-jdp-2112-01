@@ -3,12 +3,14 @@ package com.kodilla.ecommercee.domain;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "PRODUCTS")
 public class Product {
@@ -31,7 +33,7 @@ public class Product {
     @Column(name = "UNIT_PRICE")
     private BigDecimal unitPrice;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 

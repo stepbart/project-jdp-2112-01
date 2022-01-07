@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "PRODUCT-GROUPS")
+@Table(name = "PRODUCT_GROUPS")
 public class Group {
 
     @Id
@@ -24,7 +24,7 @@ public class Group {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(targetEntity = Product.class, mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Product.class, mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
 
     public Group(String name) {
