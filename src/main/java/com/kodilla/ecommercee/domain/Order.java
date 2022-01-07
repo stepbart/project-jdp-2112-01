@@ -32,17 +32,17 @@ public class Order {
     private BigDecimal finalCost;
 
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CART_ID")
     private Cart cart;
 
-    public Order(LocalDate orderDate, LocalDate deliveryDate, String status, User user, Cart cart) {
+    public Order(LocalDate orderDate, LocalDate deliveryDate, Status status, User user, Cart cart) {
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
         this.finalCost = cart.getTotalPrice();
