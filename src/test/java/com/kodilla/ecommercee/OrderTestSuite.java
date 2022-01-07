@@ -142,7 +142,7 @@ public class OrderTestSuite {
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);
 
-        Cart cart = new Cart();
+        Cart cart = new Cart(new BigDecimal(0));
         Item item1 = new Item(10, product1, cart);
         Item item2 = new Item(3, product2, cart);
         Item item3 = new Item(1, product3, cart);
