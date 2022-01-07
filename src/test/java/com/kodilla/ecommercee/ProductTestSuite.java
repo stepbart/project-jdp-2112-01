@@ -113,6 +113,9 @@ public class ProductTestSuite {
 
         //Then
         Assert.assertEquals(new BigDecimal(6.00), productToUpdate.getUnitPrice());
+
+        //CleanUp
+        groupRepository.deleteAll();
     }
 
 }
