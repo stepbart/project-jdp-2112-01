@@ -42,7 +42,7 @@ public class Cart {
     private Order order;
 
     public Cart(BigDecimal totalPrice) {
-        this.items = new ArrayList();
+        this.items = new ArrayList<>();
         this.totalPrice = totalPrice;
     }
 }
