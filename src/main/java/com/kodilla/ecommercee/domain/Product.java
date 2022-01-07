@@ -35,6 +35,11 @@ public class Product {
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
+    @OneToOne()
+    @JoinColumn(name = "ITEM_ID")
+    private Item item;
+
+
     public Product(String name, String description, BigDecimal unitPrice, Group group) {
         this.name = name;
         this.description = description;
