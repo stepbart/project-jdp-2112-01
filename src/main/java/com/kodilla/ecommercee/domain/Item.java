@@ -25,7 +25,7 @@ public class Item {
     @Column(name="price", nullable = false)
     private BigDecimal price;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
     private Product product;
 
