@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,9 +36,11 @@ public class Product {
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
-    @OneToOne()
-    @JoinColumn(name = "ITEM_ID")
-    private Item item;
+    @OneToMany(
+            targetEntity = Item.class,
+            mappedBy = "product"
+    )
+    private List<Item> items;
 
 
     public Product(String name, String description, BigDecimal unitPrice, Group group) {
