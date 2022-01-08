@@ -32,5 +32,4 @@ dependencies {
     runtimeOnly('com.h2database:h2')
     annotationProcessor('org.projectlombok:lombok:1.18.22')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-}
 
