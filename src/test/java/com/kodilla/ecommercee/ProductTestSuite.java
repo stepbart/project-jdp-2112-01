@@ -4,7 +4,7 @@ import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.repository.GroupRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
-import org.junit.Assert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -39,12 +41,12 @@ public class ProductTestSuite {
         long id = product1.getId();;
 
         Optional<Product> readProduct = productRepository.findById(id);
-        Assert.assertTrue(readProduct.isPresent());
+        assertTrue(readProduct.isPresent());
 
 
         //CleanUp
-        productRepository.deleteById(id);
-        System.out.println(product1.getGroup().getProducts().size());
+        groupRepository.deleteAll();
+
     }
 
     @Test
@@ -63,7 +65,10 @@ public class ProductTestSuite {
         int productAmount = productRepository.findAll().size();
 
         //Then
-        Assert.assertEquals(3, productAmount);
+        assertEquals(3, productAmount);
+
+        //Cleanup
+        groupRepository.deleteAll();
 
     }
 
@@ -85,8 +90,8 @@ public class ProductTestSuite {
         productRepository.deleteById(product1Id);
         int productAmount = productRepository.findAll().size();
 
-        Assert.assertEquals(1, productAmount);
-        Assert.assertTrue(!groupRepository.findAll().isEmpty());
+        assertEquals(1, productAmount);
+        assertTrue(!groupRepository.findAll().isEmpty());
 
         //CleanUp
         groupRepository.deleteAll();
@@ -100,7 +105,7 @@ public class ProductTestSuite {
         Group group = new Group("NAME");
         Product product1 = new Product("Name", "Descr", new BigDecimal(5.50), group);
         Product product2 = new Product("Name2", "Descr2", new BigDecimal(5.50), group);
-        Product product3 = new Product("Name2", "Descr2", new BigDecimal(5.50), group);
+        Product product3 = new Product("Name3", "Descr3", new BigDecimal(5.50), group);
 
         //When
         groupRepository.save(group);
@@ -108,11 +113,14 @@ public class ProductTestSuite {
         productRepository.save(product2);
         productRepository.save(product3);
 
-        Product productToUpdate = productRepository.findById(product1.getId()).get();
+        long product1Id = product1.getId();
+        Product productToUpdate = productRepository.findById(product1Id).get();
         productToUpdate.setUnitPrice(new BigDecimal(6.00));
+        BigDecimal newPrice = productToUpdate.getUnitPrice();
+        productRepository.save(productToUpdate);
 
         //Then
-        Assert.assertEquals(new BigDecimal(6.00), productToUpdate.getUnitPrice());
+        assertThat(newPrice, Matchers.comparesEqualTo(productRepository.findById(product1.getId()).get().getUnitPrice()));
 
         //CleanUp
         groupRepository.deleteAll();

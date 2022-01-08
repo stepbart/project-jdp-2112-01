@@ -64,6 +64,5 @@ public class GroupController {
                 HttpStatus.ACCEPTED
         );
     }
-
 }
 
