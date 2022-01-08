@@ -5,6 +5,7 @@ import com.kodilla.ecommercee.domain.Item;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.repository.CartRepository;
+import com.kodilla.ecommercee.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +24,9 @@ import static org.junit.Assert.*;
 public class CartTestSuite {
 
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private List<Item> items = new ArrayList<>();;
 
@@ -107,6 +108,22 @@ public class CartTestSuite {
         //when
         //then
         assertTrue(user.getCarts().contains(cart));
+    }
+
+    @Test
+    public void shouldUserBeRemovedFromDatabaseIfCartIsDeleted() {
+        //given
+        Cart cart = createOne(new BigDecimal("199.05"));
+        User user = createUser();
+        user.getCarts().add(cart);
+        cartRepository.save(cart);
+        cartRepository.delete(cart);
+        boolean isStill = cartRepository.findAll().contains(cart);
+        //when
+        Optional<User> expectedUser = userRepository.findById(1L);
+        //then
+        assertEquals(Optional.empty(), expectedUser);
+        assertFalse(isStill);
     }
 
     private User createUser() {
