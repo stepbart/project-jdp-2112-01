@@ -33,7 +33,7 @@ public class Item {
     @JoinColumn(name="product_id")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name="cart_id")
     private Cart cart;
 
@@ -51,5 +51,11 @@ public class Item {
         else {
             this.price = new BigDecimal(BigInteger.ZERO);
         }
+    }
+
+    public Item(int quantity, Cart cart, BigDecimal price) {
+        this.quantity = quantity;
+        this.cart = cart;
+        this.price = price;
     }
 }
