@@ -3,11 +3,15 @@ package com.kodilla.ecommercee.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -38,5 +42,14 @@ public class Item {
         this.product = product;
         this.cart = cart;
         this.price = product.getUnitPrice().multiply(new BigDecimal(quantity));
+    }
+
+    public void calculatePrice(Product product){
+        if (this.quantity > 0){
+            this.price = product.getUnitPrice().multiply(new BigDecimal(this.quantity));
+        }
+        else {
+            this.price = new BigDecimal(BigInteger.ZERO);
+        }
     }
 }

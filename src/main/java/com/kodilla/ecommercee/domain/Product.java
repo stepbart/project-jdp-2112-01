@@ -3,13 +3,16 @@ package com.kodilla.ecommercee.domain;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "PRODUCTS")
 public class Product {
@@ -32,16 +35,17 @@ public class Product {
     @Column(name = "UNIT_PRICE")
     private BigDecimal unitPrice;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
     @OneToMany(
             targetEntity = Item.class,
-            mappedBy = "product"
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     private List<Item> items;
-
 
     public Product(String name, String description, BigDecimal unitPrice, Group group) {
         this.name = name;

@@ -38,7 +38,7 @@ public class Cart {
     @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
 
-    @OneToOne()
+    @OneToOne
     private Order order;
 
     public Cart(BigDecimal totalPrice) {

@@ -1,10 +1,7 @@
 package com.kodilla.ecommercee;
 
 import com.kodilla.ecommercee.domain.*;
-import com.kodilla.ecommercee.repository.CartRepository;
-import com.kodilla.ecommercee.repository.ItemRepository;
-import com.kodilla.ecommercee.repository.OrderRepository;
-import com.kodilla.ecommercee.repository.UserRepository;
+import com.kodilla.ecommercee.repository.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,54 +31,38 @@ public class ItemRepositoryTestSuite {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Test
-    public void testCreateAndRead() {
-        Product product1 = new Product("stolik","mały stolik",BigDecimal.valueOf(299L),new Group("meble"));
-        Product product2 = new Product("telewizor","TV LG555 55cali",BigDecimal.valueOf(1999L),new Group("RTV"));
+    public void testSaveItemAndRelatedProductEntity() {
+        Product product1 = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), new Group("meble"));
 
-        //Cart cart1 = new Cart(BigDecimal.valueOf(299L),new User(), new Order());
-        //Cart cart2 = new Cart(BigDecimal.valueOf(1999L),new User(), new Order());
+        Item item1 = new Item();
+        item1.setQuantity(4);
+        item1.calculatePrice(product1);
+        item1.setProduct(product1);
 
+        Item item2 = new Item();
+        item2.setQuantity(1);
+        item2.calculatePrice(product1);
+        item2.setProduct(product1);
 
-//        Item item = new Item();
-//
-//        Set<Order> orders = new HashSet<>();
-//        orders.add(order);
-//        Set<Cart> carts = new HashSet<>();
-//        carts.add(cart);
-//        List<Item> items = new ArrayList<>();
-//        items.add(item);
-//
-//        user.setCarts(carts);
-//        user.setOrders(orders);
-//        cart.setOrder(order);
-//        cart.setUser(user);
-//        cart.setItems(items);
-//        order.setItems(items);
-//        order.setCart(cart);
-//        order.setUser(user);
-        //item.setOrder(order);
-        //item.setCart(cart);
-
-        //itemRepository.save(item);
+        List<Item> newItemsList = new ArrayList<>();
+        newItemsList.add(item1);
+        newItemsList.add(item2);
+        product1.setItems(newItemsList);
 
 
-        //assertEquals(item.getPrice(),new BigDecimal(99.99));
-        //assertEquals(item.getQuantity(),8);
-    }
 
-//    @Test
-//    public void testUpdate() {
-//        Item item = new Item();
-//        item.setPrice(new BigDecimal(99.99));
-//
-//        itemRepository.save(item);
-//        BigDecimal changedPrice = new BigDecimal(100);
-//        Optional<Item> itemEntity = itemRepository
-//                .findById(item.getId());
-//
-//        assertTrue(itemEntity.isPresent());
-//        assertEquals(item.getPrice(),new BigDecimal(99.99));
-//        assertEquals(item.getQuantity(),9);
-//    }
-}
+        itemRepository.save(item1);
+        itemRepository.save(item2);
+        long product1id = product1.getId();
+        System.out.println(productRepository.findById(product1id));
+        Product testProduct = productRepository.findById(product1id).orElse(null);
+        testProduct.getItems().stream().map(Item::getPrice).forEach(System.out::println);
+        //itemRepository.save(item1);
+
+
+
+    }}

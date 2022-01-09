@@ -146,7 +146,6 @@ public class OrderTestSuite {
     public void testDisplayOrder() {
         //Given
         Group group = new Group("gorceries");
-        groupRepository.save(group);
         Product product1 = new Product("milk", "3,2%", new BigDecimal(2.19), group);
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);
@@ -221,7 +220,6 @@ public class OrderTestSuite {
     public void testDeleteOrder() {
         //Given
         Group group = new Group("groceries");
-        groupRepository.save(group);
         Product product1 = new Product("milk", "3,2%", new BigDecimal(2.19), group);
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);
