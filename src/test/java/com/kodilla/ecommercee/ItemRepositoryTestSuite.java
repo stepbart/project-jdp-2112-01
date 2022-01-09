@@ -1,9 +1,7 @@
 package com.kodilla.ecommercee;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Item;
-import com.kodilla.ecommercee.domain.Order;
-import com.kodilla.ecommercee.domain.User;
+import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.ItemRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
@@ -15,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,26 +31,43 @@ public class ItemRepositoryTestSuite {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
+
     @Test
     public void testCreateAndRead() {
-        User user = new User("neo","Dan","Brown","test@test.pl","568457984","ul. Testowa 2",false);
-        LocalDate orderDate = LocalDate.now();
-        LocalDate deliveryDate = orderDate.plusDays(3);
-        Cart cart = new Cart();
-        Order order = new Order(orderDate,deliveryDate,new BigDecimal(99.99),"paid",user,new ArrayList<>(), new HashSet<>());
-        Item item = new Item();
-        item.setQuantity(8);
-        item.setPrice(new BigDecimal(99.99));
+        Product product1 = new Product("stolik","mały stolik",BigDecimal.valueOf(299L),new Group("meble"));
+        Product product2 = new Product("telewizor","TV LG555 55cali",BigDecimal.valueOf(1999L),new Group("RTV"));
+
+        //Cart cart1 = new Cart(BigDecimal.valueOf(299L),new User(), new Order());
+        //Cart cart2 = new Cart(BigDecimal.valueOf(1999L),new User(), new Order());
 
 
-        userRepository.save(user);
-        orderRepository.save(order);
-        item.setOrder(order);
+//        Item item = new Item();
+//
+//        Set<Order> orders = new HashSet<>();
+//        orders.add(order);
+//        Set<Cart> carts = new HashSet<>();
+//        carts.add(cart);
+//        List<Item> items = new ArrayList<>();
+//        items.add(item);
+//
+//        user.setCarts(carts);
+//        user.setOrders(orders);
+//        cart.setOrder(order);
+//        cart.setUser(user);
+//        cart.setItems(items);
+//        order.setItems(items);
+//        order.setCart(cart);
+//        order.setUser(user);
+        //item.setOrder(order);
         //item.setCart(cart);
-        itemRepository.save(item);
 
-        assertEquals(item.getPrice(),new BigDecimal(99.99));
-        assertEquals(item.getQuantity(),8);
+        //itemRepository.save(item);
+
+
+        //assertEquals(item.getPrice(),new BigDecimal(99.99));
+        //assertEquals(item.getQuantity(),8);
     }
 
 //    @Test
