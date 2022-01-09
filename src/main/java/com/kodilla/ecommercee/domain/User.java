@@ -63,5 +63,6 @@ public class User {
         this.address = address;
         this.isBlocked = isBlocked;
         this.carts = new HashSet<>();
+        this.randomKey = "0";
     }
 }
