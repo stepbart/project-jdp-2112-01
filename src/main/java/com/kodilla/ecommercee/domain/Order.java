@@ -4,19 +4,23 @@ import com.kodilla.ecommercee.GenericEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
+@Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "orders")
-public class Order extends GenericEntity {
+@Entity
+@Table(name = "ORDERS")
+public class Order {
+
+    @Id
+    @GeneratedValue
+    @Column(name="id", nullable = false, unique = true)
+    private Long id;
 
     @Column(name = "orderDate")
     private LocalDate orderDate;
@@ -28,27 +32,22 @@ public class Order extends GenericEntity {
     private BigDecimal finalCost;
 
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(
-            targetEntity = Item.class,
-            mappedBy = "order",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    private List<Item> items = new ArrayList<>();
-
-    @OneToOne(
-            targetEntity = Cart.class,
-            mappedBy = "order",
-            cascade = CascadeType.PERSIST,
-            fetch = FetchType.LAZY
-    )
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CART_ID")
     private Cart cart;
 
+    public Order(LocalDate orderDate, LocalDate deliveryDate, Status status, User user, Cart cart) {
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        this.finalCost = cart.getTotalPrice();
+        this.status = status;
+        this.user = user;
+        this.cart = cart;
+    }
 }
