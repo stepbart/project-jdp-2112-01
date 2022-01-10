@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,12 +11,14 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
     private Long id;
+
     @Column(name = "userName", nullable = false)
     private String userName;
 
@@ -43,7 +46,10 @@ public class User {
     @OneToMany(
             targetEntity = Cart.class,
             mappedBy = "user",
-            cascade = CascadeType.ALL
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.REMOVE
+            }
     )
     private Set<Cart> carts;
 
@@ -64,5 +70,9 @@ public class User {
         this.isBlocked = isBlocked;
         this.carts = new HashSet<>();
         this.randomKey = "0";
+    }
+
+    public void addCart(Cart cart) {
+        carts.add(cart);
     }
 }
