@@ -23,7 +23,7 @@ public class Cart {
     @Column(name = "CART_ID",unique = true)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
