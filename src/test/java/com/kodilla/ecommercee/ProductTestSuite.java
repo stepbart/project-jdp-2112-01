@@ -101,6 +101,7 @@ public class ProductTestSuite {
 
     @Test
     public void testUpdateProduct(){
+
         //Given
         Group group = new Group("NAME");
         Product product1 = new Product("Name", "Descr", new BigDecimal(5.50), group);
