@@ -1,9 +1,6 @@
 package com.kodilla.ecommercee.cart;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Item;
-import com.kodilla.ecommercee.domain.Order;
-import com.kodilla.ecommercee.domain.User;
+import com.kodilla.ecommercee.domain.*;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
 import org.junit.Test;
@@ -13,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -28,22 +23,7 @@ public class CartTestSuite {
     @Autowired
     private UserRepository userRepository;
 
-    private List<Item> items = new ArrayList<>();;
-
-    private void fillList() {
-        Random random = new Random();
-        int quantity = random.nextInt(99);
-        int value = random.nextInt(3000);
-        for (Long i = 0L; i <= 20L; i++) {
-            items.add(new Item(
-                    i,
-                    quantity,
-                    new BigDecimal(BigInteger.valueOf(value)),
-                    genereteOrder(),
-                    createOne(BigDecimal.valueOf(value))
-            ));
-        }
-    }
+    private List<Item> items = new ArrayList<>();
 
     private Cart createOne(BigDecimal totalValue) {
         return new Cart(
@@ -137,17 +117,4 @@ public class CartTestSuite {
                 false
         );
     }
-
-    private Order genereteOrder() {
-        return new Order(
-                LocalDate.now(),
-                LocalDate.now().plusDays(20L),
-                new BigDecimal("432.00"),
-                "InProcess",
-                createUser(),
-                items,
-                createOne(new BigDecimal("1999.00"))
-        );
-    }
-
 }
