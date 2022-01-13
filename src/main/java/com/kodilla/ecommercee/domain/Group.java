@@ -31,6 +31,6 @@ public class Group {
 
     public Group(String name) {
         this.name = name;
-        this.products = new ArrayList<>();
+        this.products = new ArrayList<Product>();
     }
 }
