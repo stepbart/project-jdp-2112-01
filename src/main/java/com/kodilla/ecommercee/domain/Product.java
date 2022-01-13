@@ -1,15 +1,18 @@
 package com.kodilla.ecommercee.domain;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "PRODUCTS")
 public class Product {
@@ -48,5 +51,6 @@ public class Product {
         this.description = description;
         this.unitPrice = unitPrice;
         this.group = group;
+        this.items = new ArrayList<>();
     }
 }
