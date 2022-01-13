@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.domain;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "PRODUCT_GROUPS")
 public class Group {
 
@@ -29,6 +31,6 @@ public class Group {
 
     public Group(String name) {
         this.name = name;
-        this.products = new ArrayList();
+        this.products = new ArrayList<>();
     }
 }
