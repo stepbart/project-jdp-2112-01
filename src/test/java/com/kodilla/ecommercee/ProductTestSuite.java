@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest()
+@SpringBootTest
 public class ProductTestSuite {
 
     @Autowired
@@ -38,19 +38,19 @@ public class ProductTestSuite {
         groupRepository.save(group);
 
         //Then
-        long id = product1.getId();;
+        long id = product1.getId();
+        long groupId = group.getId();
 
         Optional<Product> readProduct = productRepository.findById(id);
         assertTrue(readProduct.isPresent());
 
-
         //CleanUp
-        groupRepository.deleteAll();
-
+        groupRepository.deleteById(groupId);
     }
 
     @Test
     public void testFindAllProducts(){
+
         //Given
         Group group = new Group("NAME");
         Product product1 = new Product("Name", "Descr", new BigDecimal(5.50), group);
@@ -65,16 +65,18 @@ public class ProductTestSuite {
         int productAmount = productRepository.findAll().size();
 
         //Then
+        long id = group.getId();
         assertEquals(3, productAmount);
 
         //Cleanup
-        groupRepository.deleteAll();
+        groupRepository.deleteById(id);
 
     }
 
 
     @Test
     public void testDeleteProduct_ShouldSaveGroup(){
+
         //Given
         Group group = new Group("NAME");
         Product product1 = new Product("Name", "Descr", new BigDecimal(5.50), group);
@@ -87,6 +89,7 @@ public class ProductTestSuite {
         long product1Id = product1.getId();
 
         //Then
+        long id = group.getId();
         productRepository.deleteById(product1Id);
         int productAmount = productRepository.findAll().size();
 
@@ -94,7 +97,7 @@ public class ProductTestSuite {
         assertTrue(!groupRepository.findAll().isEmpty());
 
         //CleanUp
-        groupRepository.deleteAll();
+        groupRepository.deleteById(id);
     }
 
 
@@ -115,6 +118,8 @@ public class ProductTestSuite {
         productRepository.save(product3);
 
         long product1Id = product1.getId();
+        long id = group.getId();
+
         Product productToUpdate = productRepository.findById(product1Id).get();
         productToUpdate.setUnitPrice(new BigDecimal(6.00));
         BigDecimal newPrice = productToUpdate.getUnitPrice();
@@ -124,7 +129,7 @@ public class ProductTestSuite {
         assertThat(newPrice, Matchers.comparesEqualTo(productRepository.findById(product1.getId()).get().getUnitPrice()));
 
         //CleanUp
-        groupRepository.deleteAll();
+        groupRepository.deleteById(id);
     }
 
 }
