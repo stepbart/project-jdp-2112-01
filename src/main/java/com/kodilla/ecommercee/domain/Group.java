@@ -33,4 +33,10 @@ public class Group {
         this.name = name;
         this.products = new ArrayList<Product>();
     }
+
+    public Group(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.products = new ArrayList<Product>();
+    }
 }

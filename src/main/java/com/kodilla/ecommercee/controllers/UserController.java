@@ -1,4 +1,4 @@
-package com.kodilla.ecommercee;
+package com.kodilla.ecommercee.controllers;
 
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.UserDto;
