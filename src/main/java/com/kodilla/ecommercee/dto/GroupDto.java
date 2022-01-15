@@ -6,6 +6,8 @@ import com.kodilla.ecommercee.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -15,4 +17,6 @@ public class GroupDto {
     private Long id;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("products")
+    List<Product> products;
 }
