@@ -1,10 +1,7 @@
 package com.kodilla.ecommercee;
 
 import com.kodilla.ecommercee.domain.*;
-import com.kodilla.ecommercee.repository.GroupRepository;
-import com.kodilla.ecommercee.repository.OrderRepository;
-import com.kodilla.ecommercee.repository.ProductRepository;
-import com.kodilla.ecommercee.repository.UserRepository;
+import com.kodilla.ecommercee.repository.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +31,9 @@ public class OrderTestSuite {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     private User user1;
     private User user2;
@@ -146,6 +146,9 @@ public class OrderTestSuite {
     public void testDisplayOrder() {
         //Given
         Group group = new Group("gorceries");
+
+        groupRepository.save(group);
+
         Product product1 = new Product("milk", "3,2%", new BigDecimal(2.19), group);
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);
@@ -220,6 +223,9 @@ public class OrderTestSuite {
     public void testDeleteOrder() {
         //Given
         Group group = new Group("groceries");
+
+        groupRepository.save(group);
+
         Product product1 = new Product("milk", "3,2%", new BigDecimal(2.19), group);
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);

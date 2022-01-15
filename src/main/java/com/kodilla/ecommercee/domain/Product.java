@@ -35,7 +35,7 @@ public class Product {
     @Column(name = "UNIT_PRICE")
     private BigDecimal unitPrice;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 

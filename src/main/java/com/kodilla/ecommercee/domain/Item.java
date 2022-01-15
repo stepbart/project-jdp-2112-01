@@ -43,19 +43,4 @@ public class Item {
         this.cart = cart;
         this.price = product.getUnitPrice().multiply(new BigDecimal(quantity));
     }
-
-    public void calculatePrice(Product product){
-        if (this.quantity > 0){
-            this.price = product.getUnitPrice().multiply(new BigDecimal(this.quantity));
-        }
-        else {
-            this.price = new BigDecimal(BigInteger.ZERO);
-        }
-    }
-
-    public Item(int quantity, Cart cart, BigDecimal price) {
-        this.quantity = quantity;
-        this.cart = cart;
-        this.price = price;
-    }
 }

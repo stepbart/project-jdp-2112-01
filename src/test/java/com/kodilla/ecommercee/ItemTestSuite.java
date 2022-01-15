@@ -25,50 +25,40 @@ public class ItemTestSuite {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private GroupRepository groupRepository;
+
     @Test
     public void testCreateAndReadItem_And_RelatedEntities() {
         //Given
-        Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), new Group("meble"));
+        Group group = new Group("meble");
+
+        groupRepository.save(group);
+
+        Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), group);
         Cart cart = new Cart(new BigDecimal(1500));
 
-        Item item1 = new Item(4,cart,new BigDecimal(1000));
-        Item item2 = new Item(1,cart,new BigDecimal(500));
-
-        Item item3 = new Item();
-        item3.setQuantity(4);
-        item3.setProduct(product);
-
-        Item item4 = new Item();
-        item4.setQuantity(1);
-        item4.setProduct(product);
-
-        item3.calculatePrice(product);
-        item4.calculatePrice(product);
+        Item item1 = new Item(4,product,cart);
+        Item item2 = new Item(1,product,cart);
 
         List<Item> newItemsList = new ArrayList<>();
-        newItemsList.add(item3);
-        newItemsList.add(item4);
+        newItemsList.add(item1);
+        newItemsList.add(item2);
         product.setItems(newItemsList);
 
         cart.getItems().add(item1);
         cart.getItems().add(item2);
 
         //When
+        cartRepository.save(cart);
         itemRepository.save(item1);
         itemRepository.save(item2);
-        itemRepository.save(item3);
-        itemRepository.save(item4);
 
         //Then
         long productId = product.getId();
         long cartId = cart.getId();
         Long item1id = item1.getId();
         Long item2id = item2.getId();
-        Long item3id = item3.getId();
-        Long item4id = item4.getId();
-
-        Product testProduct = productRepository.findById(productId).orElse(null);
-        Cart testCart = cartRepository.findById(cartId).orElse(null);
 
         assertTrue(productRepository.findById(productId).isPresent());
         assertTrue(cartRepository.findById(cartId).isPresent());
@@ -76,22 +66,29 @@ public class ItemTestSuite {
         assertEquals(2,cartRepository.findById(cartId).get().getItems().size());
         assertTrue(itemRepository.findById(item1id).isPresent());
         assertTrue(itemRepository.findById(item2id).isPresent());
-        assertTrue(itemRepository.findById(item3id).isPresent());
-        assertTrue(itemRepository.findById(item4id).isPresent());
+
+        //CleanUp
+        try {
+            groupRepository.deleteAll();
+            productRepository.deleteAll();
+            cartRepository.deleteAll();
+            itemRepository.deleteAll();
+        } catch (Exception e) {
+        }
     }
 
     @Test
     public void testUpdateItem_And_RelatedEntities() {
         //Given
-        Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), new Group("meble"));
+        Group group = new Group("meble");
+
+        groupRepository.save(group);
+
+        Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), group);
 
         Cart cart = new Cart(new BigDecimal(1500));
 
-        Item item = new Item();
-        item.setQuantity(4);
-        item.setProduct(product);
-        item.setCart(cart);
-        item.calculatePrice(product);
+        Item item = new Item(4,product,cart);
 
         List<Item> newItemsList = new ArrayList<>();
         newItemsList.add(item);
@@ -99,6 +96,7 @@ public class ItemTestSuite {
 
         cart.getItems().add(item);
 
+        cartRepository.save(cart);
         itemRepository.save(item);
 
         //When
@@ -113,20 +111,29 @@ public class ItemTestSuite {
         assertEquals(700,itemRepository.findById(itemId).get().getQuantity());
         assertEquals(1,productRepository.findById(productId).get().getItems().size());
         assertEquals(1,cartRepository.findById(cartId).get().getItems().size());
+
+        //CleanUp
+        try {
+            groupRepository.deleteAll();
+            productRepository.deleteAll();
+            cartRepository.deleteAll();
+            itemRepository.deleteAll();
+        } catch (Exception e) {
+        }
     }
 
     @Test
-    public void testDeletItem_And_RelatedEntities() {
+    public void testDeleteItem_And_RelatedEntities() {
         //Given
-        Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), new Group("meble"));
+        Group group = new Group("meble");
+
+        groupRepository.save(group);
+
+        Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), group);
 
         Cart cart = new Cart(new BigDecimal(1500));
 
-        Item item = new Item();
-        item.setQuantity(4);
-        item.setProduct(product);
-        item.setCart(cart);
-        item.calculatePrice(product);
+        Item item = new Item(4,product,cart);
 
         List<Item> newItemsList = new ArrayList<>();
         newItemsList.add(item);
@@ -134,6 +141,7 @@ public class ItemTestSuite {
 
         cart.getItems().add(item);
 
+        cartRepository.save(cart);
         itemRepository.save(item);
 
         //When
@@ -147,5 +155,14 @@ public class ItemTestSuite {
         assertFalse(itemRepository.findById(itemId).isPresent());
         assertEquals(0,productRepository.findById(productId).get().getItems().size());
         assertEquals(0,cartRepository.findById(cartId).get().getItems().size());
+
+        //CleanUp
+        try {
+            groupRepository.deleteAll();
+            productRepository.deleteAll();
+            cartRepository.deleteAll();
+            itemRepository.deleteAll();
+        } catch (Exception e) {
+        }
     }
 }
