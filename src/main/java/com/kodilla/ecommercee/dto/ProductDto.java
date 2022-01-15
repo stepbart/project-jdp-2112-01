@@ -23,8 +23,6 @@ public class ProductDto {
     private String description;
     @JsonProperty("unitPrice")
     private BigDecimal unitPrice;
-    @JsonProperty("group")
-    private Group group;
-    @JsonProperty("items")
-    private List<Item> items;
+    @JsonProperty("groupId")
+    private Long groupId;
 }

@@ -1,15 +1,28 @@
 package com.kodilla.ecommercee.mapper;
 
+import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.repository.GroupRepository;
+import com.kodilla.ecommercee.repository.ItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductMapper {
+
+    private GroupRepository groupRepository;
+    private ItemRepository itemRepository;
+
+    @Autowired
+    public ProductMapper(GroupRepository groupRepository, ItemRepository itemRepository) {
+        this.groupRepository = groupRepository;
+        this.itemRepository = itemRepository;
+    }
 
     public Product mapToProduct(final ProductDto productDto){
         return new Product(
@@ -17,8 +30,7 @@ public class ProductMapper {
                 productDto.getName(),
                 productDto.getDescription(),
                 productDto.getUnitPrice(),
-                productDto.getGroup(),
-                productDto.getItems()
+                groupRepository.findById(productDto.getGroupId()).get()
         );
     }
 
@@ -28,8 +40,7 @@ public class ProductMapper {
                 product.getName(),
                 product.getDescription(),
                 product.getUnitPrice(),
-                product.getGroup(),
-                product.getItems()
+                product.getGroup().getId()
         );
     }
 

@@ -4,11 +4,13 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -47,6 +49,15 @@ public class Product {
 
 
     public Product(String name, String description, BigDecimal unitPrice, Group group) {
+        this.name = name;
+        this.description = description;
+        this.unitPrice = unitPrice;
+        this.group = group;
+        this.items = new ArrayList<>();
+    }
+
+    public Product(Long id, String name, String description, BigDecimal unitPrice, Group group) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.unitPrice = unitPrice;
