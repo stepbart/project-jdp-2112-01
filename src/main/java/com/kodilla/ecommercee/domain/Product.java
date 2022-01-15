@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,5 +49,15 @@ public class Product {
         this.description = description;
         this.unitPrice = unitPrice;
         this.group = group;
+        this.items = new ArrayList<>();
+    }
+
+    public Product(Long id, String name, String description, BigDecimal unitPrice, Group group) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.unitPrice = unitPrice;
+        this.group = group;
+        this.items = new ArrayList<>();
     }
 }
