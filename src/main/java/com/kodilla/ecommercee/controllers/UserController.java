@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.controllers;
 
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.UserDto;
+import com.kodilla.ecommercee.exceptions.UserNotFoundException;
 import com.kodilla.ecommercee.mapper.UserMapper;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/get/{id}")
-    public UserDto getUser(@PathVariable("id") final Long id) {
-        User user = userService.getUser(id).orElse(null);
+    public UserDto getUser(@PathVariable("id") final Long id) throws UserNotFoundException {
+        User user = userService.getUser(id).orElseThrow(UserNotFoundException::new);
         return userMapper.mapToUserDto(user);
     }
 
@@ -41,21 +42,17 @@ public class UserController {
     }
 
     @PutMapping("/block/{id}")
-    public UserDto blockUser(@PathVariable("id") final Long id){
-        User user = userService.getUser(id).orElse(null);
-        if(user != null){
-            user.setBlocked(true);
-        }
+    public UserDto blockUser(@PathVariable("id") final Long id) throws UserNotFoundException{
+        User user = userService.getUser(id).orElseThrow(UserNotFoundException::new);
+        user.setBlocked(true);
         return userMapper.mapToUserDto(user);
     }
 
     @PutMapping("/updateRandomKey/{id}")
-    public UserDto updateUserRandomKey(@PathVariable("id") final Long id){
+    public UserDto updateUserRandomKey(@PathVariable("id") final Long id) throws UserNotFoundException{
         Random random = new Random();
-        User user = userService.getUser(id).orElse(null);
-        if (user != null){
-            user.setRandomKey(Integer.toString(random.nextInt(99999999)));
-        }
+        User user = userService.getUser(id).orElseThrow(UserNotFoundException::new);
+        user.setRandomKey(Integer.toString(random.nextInt(99999999)));
         return userMapper.mapToUserDto(user);
     }
 
