@@ -1,9 +1,13 @@
 package com.kodilla.ecommercee;
 
+import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.ItemDto;
 import com.kodilla.ecommercee.dto.OrderDto;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.service.CartService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +20,13 @@ import java.util.List;
 @RequestMapping("/carts")
 public class CartController {
 
-    @PostMapping
-    public ResponseEntity<CartDto> createCart(@RequestBody final CartDto cartDto) {
-        return new ResponseEntity(cartDto, HttpStatus.CREATED);
+    private CartMapper cartMapper;
+    private CartService cartService;
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createCart(@RequestBody CartDto cartDto) {
+        Cart cart = cartMapper.mapToCart(cartDto);
+        cartService.createCart(cart);
     }
 
     @GetMapping("/{id}")
@@ -31,8 +39,8 @@ public class CartController {
         return new ResponseEntity(itemDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cartId}/{itemId}")
-    public ResponseEntity deleteItem(@PathVariable("cartId") Long cartId, @PathVariable("itemId") Long itemId) {
+    @DeleteMapping("/{cartId}")
+    public ResponseEntity deleteItem(@PathVariable("cartId") Long cartId, @RequestBody ItemDto itemDto) {
         return new ResponseEntity(HttpStatus.OK);
     }
 
