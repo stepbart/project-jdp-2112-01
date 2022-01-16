@@ -17,6 +17,4 @@ public class GroupDto {
     private Long id;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("products")
-    private List<Product> products;
 }

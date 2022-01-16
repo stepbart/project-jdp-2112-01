@@ -1,4 +1,4 @@
-package com.kodilla.ecommercee;
+package com.kodilla.ecommercee.controllers;
 
 import com.kodilla.ecommercee.dto.UserDto;
 import org.springframework.http.HttpStatus;
