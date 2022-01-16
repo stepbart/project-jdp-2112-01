@@ -13,7 +13,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest()
+@SpringBootTest
 public class ItemTestSuite {
 
     @Autowired
@@ -51,12 +51,10 @@ public class ItemTestSuite {
 
         //When
         cartRepository.save(cart);
-        itemRepository.save(item1);
-        itemRepository.save(item2);
 
         //Then
-        long productId = product.getId();
-        long cartId = cart.getId();
+        Long productId = product.getId();
+        Long cartId = cart.getId();
         Long item1id = item1.getId();
         Long item2id = item2.getId();
 
@@ -69,10 +67,10 @@ public class ItemTestSuite {
 
         //CleanUp
         try {
-            groupRepository.deleteAll();
-            productRepository.deleteAll();
-            cartRepository.deleteAll();
-            itemRepository.deleteAll();
+            cartRepository.deleteById(cartId);
+            productRepository.deleteById(productId);
+            itemRepository.deleteById(item1id);
+            itemRepository.deleteById(item2id);
         } catch (Exception e) {
         }
     }
@@ -97,14 +95,13 @@ public class ItemTestSuite {
         cart.getItems().add(item);
 
         cartRepository.save(cart);
-        itemRepository.save(item);
 
         //When
         item.setQuantity(700);
 
         //Then
-        long productId = product.getId();
-        long cartId = cart.getId();
+        Long productId = product.getId();
+        Long cartId = cart.getId();
         Long itemId = item.getId();
 
         itemRepository.save(item);
@@ -114,10 +111,9 @@ public class ItemTestSuite {
 
         //CleanUp
         try {
-            groupRepository.deleteAll();
-            productRepository.deleteAll();
-            cartRepository.deleteAll();
-            itemRepository.deleteAll();
+            cartRepository.deleteById(cartId);
+            productRepository.deleteById(productId);
+            itemRepository.deleteById(itemId);
         } catch (Exception e) {
         }
     }
@@ -142,11 +138,10 @@ public class ItemTestSuite {
         cart.getItems().add(item);
 
         cartRepository.save(cart);
-        itemRepository.save(item);
 
         //When
-        long productId = product.getId();
-        long cartId = cart.getId();
+        Long productId = product.getId();
+        Long cartId = cart.getId();
         Long itemId = item.getId();
 
         itemRepository.deleteById(itemId);
@@ -158,10 +153,9 @@ public class ItemTestSuite {
 
         //CleanUp
         try {
-            groupRepository.deleteAll();
-            productRepository.deleteAll();
-            cartRepository.deleteAll();
-            itemRepository.deleteAll();
+            cartRepository.deleteById(cartId);
+            productRepository.deleteById(productId);
+            itemRepository.deleteById(itemId);
         } catch (Exception e) {
         }
     }
