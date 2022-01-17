@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/carts")
@@ -23,15 +24,15 @@ public class CartController {
     private CartMapper cartMapper;
     private CartService cartService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/createCart", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createCart(@RequestBody CartDto cartDto) {
         Cart cart = cartMapper.mapToCart(cartDto);
         cartService.createCart(cart);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<ItemDto>> getItems(@PathVariable("id") Long cartId) {
-        return new ResponseEntity(new ArrayList<ItemDto>(), HttpStatus.OK);
+    @GetMapping("getItems/{cartId}")
+    public List<ItemDto> getItems(@PathVariable("cartId") final Long cartId) {
+        return cartMapper.mapToItemDto(cartService.getItems(cartId));
     }
 
     @PutMapping("/{id}")
