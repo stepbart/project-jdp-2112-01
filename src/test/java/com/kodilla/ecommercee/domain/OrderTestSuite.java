@@ -32,8 +32,6 @@ public class OrderTestSuite {
     @Autowired
     private GroupRepository groupRepository;
 
-    @Autowired
-    private CartRepository cartRepository;
 
     private User user1;
     private User user2;
@@ -265,5 +263,4 @@ public class OrderTestSuite {
             System.out.println("Unable to cleanup database");
         }
     }
-
 }
