@@ -256,6 +256,7 @@ public class OrderTestSuite {
         //CleanUp
         try {
             orderRepository.deleteAll();
+            groupRepository.deleteById(group.getId());
         } catch (Exception e) {
             System.out.println("Unable to cleanup database");
         }
