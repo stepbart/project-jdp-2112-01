@@ -1,17 +1,17 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name="USERS")
 public class User {
 
     @Id
@@ -40,8 +40,9 @@ public class User {
     @Column(name = "isBlocked", nullable = false)
     private boolean isBlocked;
 
+    @GeneratedValue
     @Column(name = "userRandomKey")
-    private String randomKey;
+    private String randomKey = generateRandomKey();
 
     @OneToMany(
             targetEntity = Cart.class,
@@ -69,10 +70,30 @@ public class User {
         this.address = address;
         this.isBlocked = isBlocked;
         this.carts = new HashSet<>();
-        this.randomKey = "0";
+        this.orders = new HashSet<>();
+        this.randomKey = generateRandomKey();
+    }
+
+    public User(Long id, String userName, String firstName, String lastName, String email, String phoneNumber, String address, boolean isBlocked, String randomKey, Set<Cart> carts, Set<Order> orders) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.isBlocked = isBlocked;
+        this.randomKey = generateRandomKey();
+        this.carts = carts;
+        this.orders = orders;
     }
 
     public void addCart(Cart cart) {
         carts.add(cart);
+    }
+
+    private String generateRandomKey(){
+        Random random = new Random();
+        return Integer.toString(random.nextInt(99999999));
     }
 }

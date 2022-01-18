@@ -67,6 +67,7 @@ public class ItemTestSuite {
 
         //CleanUp
         try {
+            groupRepository.deleteById(group.getId());
             cartRepository.deleteById(cartId);
             productRepository.deleteById(productId);
             itemRepository.deleteById(item1id);
@@ -111,6 +112,7 @@ public class ItemTestSuite {
 
         //CleanUp
         try {
+            groupRepository.deleteById(group.getId());
             cartRepository.deleteById(cartId);
             productRepository.deleteById(productId);
             itemRepository.deleteById(itemId);
@@ -153,6 +155,7 @@ public class ItemTestSuite {
 
         //CleanUp
         try {
+            groupRepository.deleteById(group.getId());
             cartRepository.deleteById(cartId);
             productRepository.deleteById(productId);
             itemRepository.deleteById(itemId);
