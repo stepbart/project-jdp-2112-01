@@ -41,10 +41,11 @@ public class Product {
 
     @OneToMany(
             targetEntity = Item.class,
-            mappedBy = "product"
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     private List<Item> items;
-
 
     public Product(String name, String description, BigDecimal unitPrice, Group group) {
         this.name = name;
