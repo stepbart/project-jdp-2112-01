@@ -33,4 +33,8 @@ public class CartService {
         return orderService.addNewOrder(order);
     }
 
+    public Cart getCart(final Long cartId){
+        return cartRepository.findById(cartId).get();
+    }
+
 }

@@ -14,18 +14,7 @@ public class CartMapper {
         return new Cart(cartDto.getId(),cartDto.getUser(), cartDto.getItems(), cartDto.getTotalPrice(), cartDto.getOrder());
     }
 
-    public CartDto mapToCartDto(final Cart cart) {
-        return new CartDto(cart.getId(), cart.getUser(), cart.getItems(), cart.getTotalPrice(), cart.getOrder());
-    }
 
-    public List<ItemDto> mapToItemDtoList(List<Item> items){
-        List<ItemDto> itemsDto = new ArrayList<>();
-        for(Item item : items){
-            ItemDto itemDto = new ItemDto(item.getId(),item.getQuantity(),item.getPrice());
-            itemsDto.add(itemDto);
-        }
-        return itemsDto;
-    }
 
 
 }
