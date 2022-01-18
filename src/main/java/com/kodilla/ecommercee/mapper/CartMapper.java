@@ -18,7 +18,7 @@ public class CartMapper {
         return new CartDto(cart.getId(), cart.getUser(), cart.getItems(), cart.getTotalPrice(), cart.getOrder());
     }
 
-    public List<ItemDto> mapToItemDto(List<Item> items){
+    public List<ItemDto> mapToItemDtoList(List<Item> items){
         List<ItemDto> itemsDto = new ArrayList<>();
         for(Item item : items){
             ItemDto itemDto = new ItemDto(item.getId(),item.getQuantity(),item.getPrice());
@@ -26,4 +26,6 @@ public class CartMapper {
         }
         return itemsDto;
     }
+
+
 }

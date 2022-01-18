@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/carts")
@@ -32,12 +30,13 @@ public class CartController {
 
     @GetMapping("getItems/{cartId}")
     public List<ItemDto> getItems(@PathVariable("cartId") final Long cartId) {
-        return cartMapper.mapToItemDto(cartService.getItems(cartId));
+        return cartMapper.mapToItemDtoList(cartService.getItems(cartId));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ItemDto> addItem(@PathVariable("id") Long cartId, @RequestBody ItemDto itemDto) {
-        return new ResponseEntity(itemDto, HttpStatus.OK);
+    @PutMapping("/addItem/{id}")
+    public void addItem(@PathVariable("id") Long cartId, @RequestBody ItemDto itemDto) {
+
+
     }
 
     @DeleteMapping("/{cartId}")
