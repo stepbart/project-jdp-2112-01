@@ -40,13 +40,13 @@ public class CartController {
         return itemMapper.mapToItemDtoList(cartService.getItems(cartId));
     }
 
-    @PutMapping("/addItem/{id}")
+    @PutMapping(value ="/addItem/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addItem(@PathVariable("id") Long cartId, @RequestBody ItemDto itemDto) {
         Item item = itemMapper.mapToItem(itemDto);
         cartService.addItem(cartId,item);
     }
 
-    @DeleteMapping("/deleteItem/{cartId}")
+    @DeleteMapping(value ="/deleteItem/{cartId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteItem(@PathVariable("cartId") Long cartId, @RequestBody ItemDto itemDto) {
         Item item = itemMapper.mapToItem(itemDto);
         cartService.deleteItem(cartId,item);
