@@ -28,6 +28,21 @@ public class ItemTestSuite {
     @Autowired
     private GroupRepository groupRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private User createUser() {
+        return new User(
+                "testUser",
+                "firstName",
+                "lastName",
+                "test@test.com",
+                "11111111",
+                "testAddress 1",
+                false
+        );
+    }
+
     @Test
     public void testCreateAndReadItem_And_RelatedEntities() {
         //Given
@@ -36,7 +51,9 @@ public class ItemTestSuite {
         groupRepository.save(group);
 
         Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), group);
-        Cart cart = new Cart(new BigDecimal(1500));
+        User user = createUser();
+        userRepository.save(user);
+        Cart cart = new Cart(user);
 
         Item item1 = new Item(4,product,cart);
         Item item2 = new Item(1,product,cart);
@@ -72,6 +89,7 @@ public class ItemTestSuite {
             productRepository.deleteById(productId);
             itemRepository.deleteById(item1id);
             itemRepository.deleteById(item2id);
+            userRepository.deleteById(user.getId());
         } catch (Exception e) {
         }
     }
@@ -84,9 +102,9 @@ public class ItemTestSuite {
         groupRepository.save(group);
 
         Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), group);
-
-        Cart cart = new Cart(new BigDecimal(1500));
-
+        User user = createUser();
+        userRepository.save(user);
+        Cart cart = new Cart(user);
         Item item = new Item(4,product,cart);
 
         List<Item> newItemsList = new ArrayList<>();
@@ -116,6 +134,7 @@ public class ItemTestSuite {
             cartRepository.deleteById(cartId);
             productRepository.deleteById(productId);
             itemRepository.deleteById(itemId);
+            userRepository.deleteById(user.getId());
         } catch (Exception e) {
         }
     }
@@ -128,9 +147,9 @@ public class ItemTestSuite {
         groupRepository.save(group);
 
         Product product = new Product("stolik", "mały stolik", BigDecimal.valueOf(299L), group);
-
-        Cart cart = new Cart(new BigDecimal(1500));
-
+        User user = createUser();
+        userRepository.save(user);
+        Cart cart = new Cart(user);
         Item item = new Item(4,product,cart);
 
         List<Item> newItemsList = new ArrayList<>();
@@ -159,6 +178,7 @@ public class ItemTestSuite {
             cartRepository.deleteById(cartId);
             productRepository.deleteById(productId);
             itemRepository.deleteById(itemId);
+            userRepository.deleteById(user.getId());
         } catch (Exception e) {
         }
     }

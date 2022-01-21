@@ -88,8 +88,8 @@ public class UserTestSuite extends TestCase {
     @Test
     public void deleteUserTest() {
         // given
-        Cart cart = new Cart(new BigDecimal(25.55));
         User user = generateUser("Jan", "Nowak");
+        Cart cart = new Cart(user);
         user.addCart(cart);
         cart.setUser(user);
         user = userRepository.save(user);

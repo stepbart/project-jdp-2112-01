@@ -65,7 +65,7 @@ public class OrderTestSuite {
                 LocalDate.now().plusDays(7),
                 Status.IN_PREPARATION,
                 user1,
-                new Cart()
+                new Cart(user1)
         );
 
         this.order2 = new Order(
@@ -73,7 +73,7 @@ public class OrderTestSuite {
                 LocalDate.now().plusDays(7),
                 Status.COMPLETE,
                 user2,
-                new Cart()
+                new Cart(user2)
         );
 
         this.order3 = new Order(
@@ -81,7 +81,7 @@ public class OrderTestSuite {
                 LocalDate.now().plusDays(7),
                 Status.DELIEVERED,
                 user1,
-                new Cart()
+                new Cart(user1)
         );
 
         orderRepository.save(order1);
@@ -124,7 +124,7 @@ public class OrderTestSuite {
                 LocalDate.now().plusDays(7),
                 Status.SENT,
                 user2,
-                new Cart()
+                new Cart(user2)
         );
         //When
         orderRepository.save(order);
@@ -151,7 +151,7 @@ public class OrderTestSuite {
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);
 
-        Cart cart = new Cart(new BigDecimal(0));
+        Cart cart = new Cart(user2);
         Item item1 = new Item(10, product1, cart);
         Item item2 = new Item(3, product2, cart);
         Item item3 = new Item(1, product3, cart);
@@ -196,7 +196,7 @@ public class OrderTestSuite {
                 LocalDate.now().plusDays(7),
                 Status.SENT,
                 user2,
-                new Cart()
+                new Cart(user2)
         );
         orderRepository.save(order);
         long orderId = order.getId();
@@ -228,7 +228,7 @@ public class OrderTestSuite {
         Product product2 = new Product("bread", "whole grain", new BigDecimal(6.00), group);
         Product product3 = new Product("butter", "500g", new BigDecimal(12.01), group);
 
-        Cart cart = new Cart(new BigDecimal(0));
+        Cart cart = new Cart(user2);
         Item item1 = new Item(10, product1, cart);
         Item item2 = new Item(3, product2, cart);
         Item item3 = new Item(1, product3, cart);

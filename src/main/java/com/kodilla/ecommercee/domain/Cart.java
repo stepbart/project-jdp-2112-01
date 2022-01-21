@@ -42,10 +42,8 @@ public class Cart {
     @OneToOne
     private Order order;
 
-    public Cart(Long id, User user, Order order) {
-        this.id = id;
+    public Cart(User user) {
         this.user = user;
-        this.order = order;
         this.items = new ArrayList<>();
         this.totalPrice = BigDecimal.ZERO;
     }
