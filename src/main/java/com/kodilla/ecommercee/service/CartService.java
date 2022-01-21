@@ -2,15 +2,20 @@ package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.*;
 import com.kodilla.ecommercee.repository.CartRepository;
-import com.kodilla.ecommercee.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Service
 public class CartService {
 
-    private CartRepository cartRepository;
-    private OrderService orderService;
+    private final CartRepository cartRepository;
+    private final OrderService orderService;
 
     public Cart createCart(final Cart cart){
         return cartRepository.save(cart);
@@ -37,4 +42,8 @@ public class CartService {
         return cartRepository.findById(cartId).get();
     }
 
+    public void updateTotalPrice(final Long cartId, BigDecimal nextItemPrice){
+        BigDecimal actualPrice = cartRepository.findById(cartId).get().getTotalPrice();
+        cartRepository.findById(cartId).get().setTotalPrice(actualPrice.add(nextItemPrice));
+    }
 }

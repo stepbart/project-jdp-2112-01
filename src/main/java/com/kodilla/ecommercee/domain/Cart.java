@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -25,6 +25,9 @@ public class Cart {
     @Column(name = "CART_ID",unique = true)
     private Long id;
 
+    @Column(name = "TOTAL_PRICE")
+    private BigDecimal totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -36,15 +39,14 @@ public class Cart {
             fetch = FetchType.EAGER)
     private List<Item> items;
 
-    @NotNull
-    @Column(name = "TOTAL_PRICE")
-    private BigDecimal totalPrice;
-
     @OneToOne
     private Order order;
 
-    public Cart(BigDecimal totalPrice) {
+    public Cart(Long id, User user, Order order) {
+        this.id = id;
+        this.user = user;
+        this.order = order;
         this.items = new ArrayList<>();
-        this.totalPrice = totalPrice;
+        this.totalPrice = BigDecimal.ZERO;
     }
 }

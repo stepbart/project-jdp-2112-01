@@ -3,31 +3,30 @@ package com.kodilla.ecommercee.controllers;
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Item;
 import com.kodilla.ecommercee.domain.Order;
-import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.ItemDto;
-import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.mapper.ItemMapper;
 import com.kodilla.ecommercee.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/carts")
+@RequestMapping(value ="/carts")
 public class CartController {
 
-    private CartMapper cartMapper;
-    private CartService cartService;
-    private ItemMapper itemMapper;
+    private final CartMapper cartMapper;
+    private final CartService cartService;
+    private final ItemMapper itemMapper;
 
     @PostMapping(value = "/createCart", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createCart(@RequestBody CartDto cartDto) {
@@ -44,6 +43,7 @@ public class CartController {
     public void addItem(@PathVariable("id") Long cartId, @RequestBody ItemDto itemDto) {
         Item item = itemMapper.mapToItem(itemDto);
         cartService.addItem(cartId,item);
+        cartService.updateTotalPrice(cartId,item.getPrice());
     }
 
     @DeleteMapping(value ="/deleteItem/{cartId}", consumes = MediaType.APPLICATION_JSON_VALUE)

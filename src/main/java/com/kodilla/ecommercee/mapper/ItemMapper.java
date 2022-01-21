@@ -2,10 +2,12 @@ package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.domain.Item;
 import com.kodilla.ecommercee.dto.ItemDto;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ItemMapper {
 
     public Item mapToItem(final ItemDto itemDto) {
