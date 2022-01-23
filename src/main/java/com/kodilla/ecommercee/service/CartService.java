@@ -1,7 +1,9 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.dto.ItemDto;
 import com.kodilla.ecommercee.exceptions.UserNotFoundException;
+import com.kodilla.ecommercee.mapper.ItemMapper;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.ItemRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class CartService {
     private final ItemRepository itemRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final ItemMapper itemMapper;
 
     public Cart createCart(final Long userId) throws UserNotFoundException {
         User user = userService.getUser(userId).orElseThrow(UserNotFoundException::new);
@@ -29,8 +34,14 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public List<Item> getItems(final Long cartId){
-        return cartRepository.findById(cartId).get().getItems();
+    public List<ItemDto> getItems(final Long cartId){
+        List<Item> items = cartRepository.findById(cartId).get().getItems();
+        List<ItemDto> itemsDto = new ArrayList<>();
+        for (Item item : items){
+            ItemDto itemDto = itemMapper.mapToItemDto(item,item.getProduct().getId(),item.getCart().getId());
+            itemsDto.add(itemDto);
+        }
+        return itemsDto;
     }
 
     public void addItem(final Long cartId, final Long productId, int quantity){
@@ -49,6 +60,7 @@ public class CartService {
 
     public Order createOrder(final Long cartId, LocalDate deliveryTime, final User user){
         Order order = new Order(LocalDate.now(),deliveryTime, Status.IN_PREPARATION, user, cartRepository.findById(cartId).get());
+        cartRepository.findById(cartId).get().setOrder(order);
         return orderService.addNewOrder(order);
     }
 
