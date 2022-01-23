@@ -25,19 +25,27 @@ public class CartTestSuite {
 
     private List<Item> items = new ArrayList<>();
 
-    private Cart createOne(BigDecimal totalValue) {
-        return new Cart(
-                totalValue
+    private User createUser() {
+        return new User(
+                "testUser",
+                "firstName",
+                "lastName",
+                "test@test.com",
+                "11111111",
+                "testAddress 1",
+                false
         );
     }
 
     @Test
     public void shouldSaveValueOfCart() {
         //given
-        Cart cart = createOne(new BigDecimal("490.43"));
+        User user = createUser();
+        Cart cart = new Cart(user);
+        userRepository.save(user);
         //when
         Cart save = cartRepository.save(cart);
-        BigDecimal expected = new BigDecimal("490.43");
+        BigDecimal expected = cart.getTotalPrice();
         //then
         assertEquals(expected, save.getTotalPrice());
     }
@@ -45,7 +53,9 @@ public class CartTestSuite {
     @Test
     public void shouldFindItemsInCart() {
         //given
-        Cart cart = createOne(new BigDecimal("199.05"));
+        User user = createUser();
+        Cart cart = new Cart(user);
+        userRepository.save(user);
         cart.getItems().addAll(items);
         Cart save = cartRepository.save(cart);
         //when
@@ -53,11 +63,12 @@ public class CartTestSuite {
         //then
         assertEquals(expected, save.getItems().size());
     }
-
     @Test
     public void shouldDeleteCart() {
         //given
-        Cart cart = createOne(new BigDecimal("199.05"));
+        User user = createUser();
+        Cart cart = new Cart(user);
+        userRepository.save(user);
         cartRepository.save(cart);
         //when
         cartRepository.delete(cart);
@@ -68,8 +79,12 @@ public class CartTestSuite {
     @Test
     public void shouldClearAllCartsFromDB() {
         //given
-        Cart cart = createOne(new BigDecimal("199.05"));
-        Cart cart1 = createOne(new BigDecimal("310.20"));
+        User user = createUser();
+        User user1 = createUser();
+        Cart cart = new Cart(user);
+        Cart cart1 = new Cart(user1);
+        userRepository.save(user);
+        userRepository.save(user1);
         cartRepository.save(cart);
         cartRepository.save(cart1);
         //when
@@ -81,40 +96,29 @@ public class CartTestSuite {
     @Test
     public void testRelationBetweenUserAndCart() {
         //given
-        Cart cart = createOne(new BigDecimal("199.05"));
         User user = createUser();
+        Cart cart = new Cart(user);
         user.getCarts().add(cart);
-        cartRepository.save(cart);
+        userRepository.save(user);
         //when
         //then
         assertTrue(user.getCarts().contains(cart));
     }
 
     @Test
-    public void shouldUserBeRemovedFromDatabaseIfCartIsDeleted() {
+    public void userShouldNotBeRemovedFromDatabaseIfCartIsDeleted() {
         //given
-        Cart cart = createOne(new BigDecimal("199.05"));
         User user = createUser();
+        Cart cart = new Cart(user);
         user.getCarts().add(cart);
+        userRepository.save(user);
         cartRepository.save(cart);
         cartRepository.delete(cart);
         boolean isStill = cartRepository.findAll().contains(cart);
         //when
-        Optional<User> expectedUser = userRepository.findById(1L);
+        Optional<User> expectedUser = userRepository.findById(user.getId());
         //then
-        assertEquals(Optional.empty(), expectedUser);
+        assertTrue(expectedUser.isPresent());
         assertFalse(isStill);
-    }
-
-    private User createUser() {
-        return new User(
-                "testUser",
-                "firstName",
-                "lastName",
-                "test@test.com",
-                "11111111",
-                "testAddress 1",
-                false
-        );
     }
 }

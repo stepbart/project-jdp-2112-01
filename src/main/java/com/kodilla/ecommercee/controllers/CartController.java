@@ -1,43 +1,63 @@
 package com.kodilla.ecommercee.controllers;
 
+import com.kodilla.ecommercee.domain.Cart;
+import com.kodilla.ecommercee.domain.Item;
+import com.kodilla.ecommercee.domain.Order;
+import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.ItemDto;
-import com.kodilla.ecommercee.dto.OrderDto;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.kodilla.ecommercee.exceptions.UserNotFoundException;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.mapper.ItemMapper;
+import com.kodilla.ecommercee.repository.ItemRepository;
+import com.kodilla.ecommercee.service.CartService;
+import com.kodilla.ecommercee.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/carts")
+@RequestMapping(value ="/carts")
 public class CartController {
 
-    @PostMapping
-    public ResponseEntity<CartDto> createCart(@RequestBody final CartDto cartDto) {
-        return new ResponseEntity(cartDto, HttpStatus.CREATED);
+    private final CartMapper cartMapper;
+    private final CartService cartService;
+    private final ItemMapper itemMapper;
+    private final UserService userService;
+    private final ItemRepository itemRepository;
+
+    @PostMapping(value = "/createCart/{userId}")
+    public void createCart(@PathVariable("userId") Long userId) throws UserNotFoundException {
+        cartService.createCart(userId);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<ItemDto>> getItems(@PathVariable("id") Long cartId) {
-        return new ResponseEntity(new ArrayList<ItemDto>(), HttpStatus.OK);
+    @GetMapping("/getItems/{cartId}")
+    public List<ItemDto> getItems(@PathVariable("cartId") final Long cartId) {
+        return itemMapper.mapToItemDtoList(cartService.getItems(cartId));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ItemDto> addItem(@PathVariable("id") Long cartId, @RequestBody ItemDto itemDto) {
-        return new ResponseEntity(itemDto, HttpStatus.OK);
+    @PostMapping(value ="/addItem/{id}")
+    public void addItem(@PathVariable("id") Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
+        cartService.addItem(cartId,productId,quantity);
     }
 
-    @DeleteMapping("/{cartId}/{itemId}")
-    public ResponseEntity deleteItem(@PathVariable("cartId") Long cartId, @PathVariable("itemId") Long itemId) {
-        return new ResponseEntity(HttpStatus.OK);
+    @DeleteMapping(value ="/deleteItem/{itemId}")
+    public void deleteItem(@PathVariable("itemId") Long itemId) {
+        cartService.deleteItem(itemId);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<OrderDto> createOrder(@PathVariable("id") Long cartId) {
-        return new ResponseEntity(new OrderDto(1L, LocalDateTime.now(), LocalDateTime.now(), new BigDecimal(20), new BigDecimal(40), "Order created"), HttpStatus.OK);
+    @PostMapping("/createOrder/{cartId}")
+    public Order createOrder(
+            @PathVariable("cartId") Long cartId,
+            @RequestParam(name = "deliveryTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate deliveryTime) {
+        return cartService.createOrder(cartId,deliveryTime,cartService.getCart(cartId).getUser());
     }
 }

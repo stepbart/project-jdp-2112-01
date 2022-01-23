@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.domain;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Getter
@@ -23,6 +25,9 @@ public class Cart {
     @Column(name = "CART_ID",unique = true)
     private Long id;
 
+    @Column(name = "TOTAL_PRICE")
+    private BigDecimal totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,15 +39,12 @@ public class Cart {
             fetch = FetchType.EAGER)
     private List<Item> items;
 
-    @NotNull
-    @Column(name = "TOTAL_PRICE")
-    private BigDecimal totalPrice;
-
     @OneToOne
     private Order order;
 
-    public Cart(BigDecimal totalPrice) {
+    public Cart(User user) {
+        this.user = user;
         this.items = new ArrayList<>();
-        this.totalPrice = totalPrice;
+        this.totalPrice = BigDecimal.ZERO;
     }
 }
