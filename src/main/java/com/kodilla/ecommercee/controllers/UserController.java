@@ -25,7 +25,7 @@ public class UserController {
     public List<UserDto> getAllUsers(){
         List<User> users = userService.getAllUsers();
         return users.stream()
-                .map(user -> userMapper.mapToUserDto(user))
+                .map(userMapper::mapToUserDto)
                 .collect(Collectors.toList());
     }
 

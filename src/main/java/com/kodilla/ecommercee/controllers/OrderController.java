@@ -2,19 +2,14 @@ package com.kodilla.ecommercee.controllers;
 
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.dto.OrderDto;
+import com.kodilla.ecommercee.exceptions.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -36,10 +31,10 @@ public class OrderController {
         orderService.addNewOrder(orderToSave);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getOrder")
-    public OrderDto getOrder(@PathVariable("id") final Long id) {
-        OrderDto orderDto = orderMapper.mapToOrderDto(orderService.findOrder(id).orElse(null));
-        return orderDto;
+    @RequestMapping(method = RequestMethod.GET, value = "getOrder/{id}")
+    public OrderDto getOrder(@PathVariable("id") final Long id) throws OrderNotFoundException {
+        Order order = orderService.findOrder(id).orElseThrow(OrderNotFoundException::new);
+        return orderMapper.mapToOrderDto(order);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -49,7 +44,7 @@ public class OrderController {
         return orderMapper.mapToOrderDto(toSave);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteOrder")
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteOrder/{id}")
     public void deleteOrder(@PathVariable("id") final Long id) {
         orderService.deleteOrderById(id);
     }

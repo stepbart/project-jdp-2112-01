@@ -19,8 +19,13 @@ public class OrderMapper {
     }
 
     public OrderDto mapToOrderDto(final Order order) {
-        OrderDto dto = new OrderMapper().mapToOrderDto(order);
-        return dto;
+        return new OrderDto(
+                order.getId(),
+                order.getOrderDate(),
+                order.getDeliveryDate(),
+                order.getFinalCost(),
+                order.getStatus()
+        );
     }
 
     public List<OrderDto> mapToDtoList(final List<Order> orders) {

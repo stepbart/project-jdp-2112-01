@@ -1,10 +1,5 @@
 package com.kodilla.ecommercee.controllers;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Item;
-import com.kodilla.ecommercee.domain.Order;
-import com.kodilla.ecommercee.domain.User;
-import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.ItemDto;
 import com.kodilla.ecommercee.exceptions.UserNotFoundException;
 import com.kodilla.ecommercee.mapper.CartMapper;
@@ -14,10 +9,8 @@ import com.kodilla.ecommercee.service.CartService;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,7 +34,7 @@ public class CartController {
 
     @GetMapping("/getItems/{cartId}")
     public List<ItemDto> getItems(@PathVariable("cartId") final Long cartId) {
-        return itemMapper.mapToItemDtoList(cartService.getItems(cartId));
+        return cartService.getItems(cartId);
     }
 
     @PostMapping(value ="/addItem/{id}")
@@ -55,9 +48,9 @@ public class CartController {
     }
 
     @PostMapping("/createOrder/{cartId}")
-    public Order createOrder(
+    public void createOrder(
             @PathVariable("cartId") Long cartId,
             @RequestParam(name = "deliveryTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate deliveryTime) {
-        return cartService.createOrder(cartId,deliveryTime,cartService.getCart(cartId).getUser());
+        cartService.createOrder(cartId,deliveryTime,cartService.getCart(cartId).getUser());
     }
 }

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public class CartMapper {
 
     public Cart mapToCart(final CartDto cartDto) {
-        return new Cart(cartDto.getId(), cartDto.getTotalPrice(), cartDto.getUser(), cartDto.getItems(), cartDto.getOrder());
+        return new Cart(cartDto.getId(), cartDto.getTotalPrice(), cartDto.getUser(), cartDto.getOrder());
     }
 }
