@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -59,6 +60,7 @@ public class CartService {
 
     public Order createOrder(final Long cartId, LocalDate deliveryTime, final User user){
         Order order = new Order(LocalDate.now(),deliveryTime, Status.IN_PREPARATION, user, cartRepository.findById(cartId).get());
+        cartRepository.findById(cartId).get().setOrder(order);
         return orderService.addNewOrder(order);
     }
 
