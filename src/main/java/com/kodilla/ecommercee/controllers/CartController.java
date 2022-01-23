@@ -41,9 +41,9 @@ public class CartController {
     }
 
     @PostMapping("/createOrder/{cartId}")
-    public Order createOrder(
+    public void createOrder(
             @PathVariable("cartId") Long cartId,
             @RequestParam(name = "deliveryTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate deliveryTime) {
-        return cartService.createOrder(cartId,deliveryTime,cartService.getCart(cartId).getUser());
+        cartService.createOrder(cartId,deliveryTime,cartService.getCart(cartId).getUser());
     }
 }
