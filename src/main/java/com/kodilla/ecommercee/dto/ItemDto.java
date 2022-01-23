@@ -23,9 +23,9 @@ public class ItemDto {
     @JsonProperty("price")
     private BigDecimal price;
 
-    @JsonProperty("product")
-    private Product product;
+    @JsonProperty("cartId")
+    private Long cartId;
 
-    @JsonProperty("cart")
-    private Cart cart;
+    @JsonProperty("productId")
+    private Long productId;
 }
