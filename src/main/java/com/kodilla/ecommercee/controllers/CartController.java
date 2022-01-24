@@ -50,8 +50,8 @@ public class CartController {
     }
 
     @DeleteMapping(value ="/deleteItem/{itemId}")
-    public void deleteItem(@PathVariable("itemId") Long itemId) {
-        cartService.deleteItem(itemId);
+    public void deleteItem(@PathVariable("itemId") Long itemId, @RequestParam Long cartId) {
+        cartService.deleteItem(cartId, itemId);
     }
 
     @PostMapping("/createOrder/{cartId}")
