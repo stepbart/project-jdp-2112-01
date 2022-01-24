@@ -47,4 +47,11 @@ public class Cart {
         this.items = new ArrayList<>();
         this.totalPrice = BigDecimal.ZERO;
     }
+
+    public Cart(Long id, BigDecimal totalPrice, User user, Order order) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.user = user;
+        this.order = order;
+    }
 }
