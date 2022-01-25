@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,11 +32,11 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public List<ItemDto> getItems(final Long cartId){
+    public List<ItemDto> getItems(final Long cartId) {
         List<Item> items = cartRepository.findById(cartId).get().getItems();
         List<ItemDto> itemsDto = new ArrayList<>();
-        for (Item item : items){
-            ItemDto itemDto = itemMapper.mapToItemDto(item,item.getProduct().getId(),item.getCart().getId());
+        for (Item item : items) {
+            ItemDto itemDto = itemMapper.mapToItemDto(item, item.getProduct().getId(), item.getCart().getId());
             itemsDto.add(itemDto);
         }
         return itemsDto;
@@ -47,20 +45,21 @@ public class CartService {
     public void addItem(final Long cartId, final Long productId, int quantity){
         Item item = new Item(quantity,productRepository.findById(productId).get(), cartRepository.findById(cartId).get());
         itemRepository.save(item);
-        BigDecimal itemPrice = item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
+        BigDecimal itemPrice = item.getPrice();
         BigDecimal actualPrice = cartRepository.findById(cartId).get().getTotalPrice();
         Cart cart = cartRepository.findById(cartId).get();
         cart.setTotalPrice(actualPrice.add(itemPrice));
         cartRepository.save(cart);
     }
 
-    public void deleteItem(final Long itemId){
+    public void deleteItem(final Long cartId, final Long itemId){
+        BigDecimal itemPrice = itemRepository.findById(itemId).get().getPrice();
         itemRepository.deleteById(itemId);
+        updateTotalPriceAfterDeleting(cartId,itemPrice);
     }
 
     public Order createOrder(final Long cartId, LocalDate deliveryTime, final User user){
         Order order = new Order(LocalDate.now(),deliveryTime, Status.IN_PREPARATION, user, cartRepository.findById(cartId).get());
-        cartRepository.findById(cartId).get().setOrder(order);
         return orderService.addNewOrder(order);
     }
 
@@ -68,8 +67,10 @@ public class CartService {
         return cartRepository.findById(cartId).get();
     }
 
-    public void updateTotalPrice(final Long cartId, BigDecimal nextItemPrice){
+    public void updateTotalPriceAfterDeleting(final Long cartId, BigDecimal itemPrice){
         BigDecimal actualPrice = cartRepository.findById(cartId).get().getTotalPrice();
-        cartRepository.findById(cartId).get().setTotalPrice(actualPrice.add(nextItemPrice));
+        Cart cart = cartRepository.findById(cartId).get();
+        cart.setTotalPrice(actualPrice.subtract(itemPrice));
+        cartRepository.save(cart);
     }
 }

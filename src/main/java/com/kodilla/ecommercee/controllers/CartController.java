@@ -1,11 +1,13 @@
 package com.kodilla.ecommercee.controllers;
 
+import com.kodilla.ecommercee.domain.Item;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.dto.ItemDto;
 import com.kodilla.ecommercee.exceptions.UserNotFoundException;
 import com.kodilla.ecommercee.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,7 +22,7 @@ public class CartController {
 
     private final CartService cartService;
 
-    @PostMapping(value = "/createCart/{userId}")
+    @PostMapping(value = "/createCart/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createCart(@PathVariable("userId") Long userId) throws UserNotFoundException {
         cartService.createCart(userId);
     }
@@ -36,8 +38,8 @@ public class CartController {
     }
 
     @DeleteMapping(value ="/deleteItem/{itemId}")
-    public void deleteItem(@PathVariable("itemId") Long itemId) {
-        cartService.deleteItem(itemId);
+    public void deleteItem(@PathVariable("itemId") Long itemId, @RequestParam Long cartId) {
+        cartService.deleteItem(cartId, itemId);
     }
 
     @PostMapping("/createOrder/{cartId}")
